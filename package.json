@@ -1,0 +1,29 @@
+{
+  "name": "hacsql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HacAtac/hacSql.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HacAtac/hacSql/issues"
+  },
+  "homepage": "https://github.com/HacAtac/hacSql#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.16"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
+}
