@@ -123,6 +123,78 @@ app.post('/api/candidate', ({ body }, res) => {
   })
 })
 
+//UPDATE a candidates party
+app.put('/api/candidate/:id', (req, res) => {
+  const errors = inputCheck(req.body, 'party_id')
+  if (errors) {
+    res.status(400).json({ error: errors })
+    return
+  }
+  const sql = `UPDATE candidates SET party_id = ? WHERE id = ?`
+  const params = [req.body.party_id, req.params.id]
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      console.error(err)
+      return res.status(500).json({ error: err.message })
+    } else {
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'Candidate not found' })
+      }
+    }
+    res.json({
+      message: 'Success',
+      data: req.body,
+      changes: result.affectedRows,
+    })
+  })
+})
+
+//GET all parties
+app.get('/api/parties', (req, res) => {
+  const sql = `SELECT * FROM parties`
+  db.query(sql, (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message })
+    }
+    res.json({
+      message: 'Success',
+      data: rows,
+    })
+  })
+})
+
+//GET a single party
+app.get('/api/party/:id', (req, res) => {
+  const sql = `SELECT * FROM parties WHERE id = ${req.params.id}`
+  db.query(sql, (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message })
+    }
+    res.json({
+      message: 'Success',
+      data: row,
+    })
+  })
+})
+
+//DELETE a single party
+app.delete('/api/party/:id', (req, res) => {
+  const sql = `DELETE FROM parties WHERE id = ${req.params.id}`
+  db.query(sql, (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: err.message })
+    } else {
+      if (row.affectedRows === 0) {
+        return res.status(404).json({ error: 'Party not found' })
+      }
+    }
+    res.json({
+      message: `Successfully deleted party with id ${req.params.id}`,
+      changes: row.affectedRows,
+    })
+  })
+})
+
 //Default response for any other request (NOT FOUND)
 app.use((req, res) => {
   res.status(404).json({
